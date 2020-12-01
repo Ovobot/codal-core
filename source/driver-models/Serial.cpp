@@ -23,15 +23,7 @@ void Serial::dataReceived(char c)
     int delimeterOffset = 0;
     int delimLength = this->delimeters.length();
 
-    //iterate through our delimeters (if any) to see if there is a match
-    while(delimeterOffset < delimLength)
-    {
-        //fire an event if there is to block any waiting fibers
-        if(this->delimeters.charAt(delimeterOffset) == c)
-            Event(this->id, CODAL_SERIAL_EVT_DELIM_MATCH);
 
-        delimeterOffset++;
-    }
 
     uint16_t newHead = (rxBuffHead + 1) % rxBuffSize;
 
@@ -55,11 +47,21 @@ void Serial::dataReceived(char c)
     else
         //otherwise, our buffer is full, send an event to the user...
         Event(this->id, CODAL_SERIAL_EVT_RX_FULL);
+
+    //iterate through our delimeters (if any) to see if there is a match
+    while(delimeterOffset < delimLength)
+    {
+        //fire an event if there is to block any waiting fibers
+        if(this->delimeters.charAt(delimeterOffset) == c)
+            Event(this->id, CODAL_SERIAL_EVT_DELIM_MATCH);
+
+        delimeterOffset++;
+    }    
 }
 
 void Serial::dataTransmitted()
 {
-    if(!(status & CODAL_SERIAL_STATUS_TX_BUFF_INIT))
+    if(txBuffTail == txBuffHead || !(status & CODAL_SERIAL_STATUS_TX_BUFF_INIT))
         return;
 
     //send our current char
