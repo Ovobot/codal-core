@@ -125,8 +125,8 @@ namespace codal
         /**
          * SUB CLASSES / IMPLEMENTATIONS DEFINE THE FOLLOWING METHODS:
          **/
-        virtual int putc(char c) = 0;
-        virtual int getc() = 0;
+        virtual int codalPutc(char c) = 0;
+        virtual int codalGetc() = 0;
 
         /**
           * Constructor.

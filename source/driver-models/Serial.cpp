@@ -11,7 +11,7 @@ using namespace codal;
  * Define what needs to be implemented, I think all it is so far:
  *  * tx / rx interrupt enable
  *  * pin swap
- *  * putc getc
+ *  * codalPutc getc
  *  * Interrupt that calls datarec / datawritten.
  **/
 
@@ -65,7 +65,7 @@ void Serial::dataTransmitted()
         return;
 
     //send our current char
-    putc((char)txBuff[txBuffTail]);
+    codalPutc((char)txBuff[txBuffTail]);
 
     //unblock any waiting fibers that are waiting for transmission to finish.
     uint16_t nextTail = (txBuffTail + 1) % txBuffSize;
@@ -453,21 +453,21 @@ void Serial::printf(const char* format, ...)
             {
 
             case 'c':
-                putc((char)val);
+                codalPutc((char)val);
                 break;
             case 'd':
                 memset(buff, 0, 20);
                 itoa(val, buff);
                 while((c = *buffPtr++) != 0)
-                    putc(c);
+                    codalPutc(c);
                 break;
 
             case 's':
                 while((c = *str++) != 0)
-                    putc(c);
+                    codalPutc(c);
                 break;
             case '%':
-                putc('%');
+                codalPutc('%');
                 break;
 
             case 'x':
@@ -486,23 +486,23 @@ void Serial::printf(const char* format, ...)
                     }
                     if (digit != '0')
                     {
-                        putc((char)digit);
+                        codalPutc((char)digit);
                         firstDigitFound = true;
                     }
                     else if (firstDigitFound || i == 1)
-                        putc((char)digit);
+                        codalPutc((char)digit);
                 }
                 break;
             case 'p':
             default:
-                putc('?');
-                putc('?');
-                putc('?');
+                codalPutc('?');
+                codalPutc('?');
+                codalPutc('?');
                 break;
             }
         }
         else
-            putc(current);
+            codalPutc(current);
     }
     target_enable_irq();
 
