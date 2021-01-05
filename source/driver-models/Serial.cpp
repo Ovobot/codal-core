@@ -231,7 +231,7 @@ void Serial::send(SerialMode mode)
  * @note this method assumes that the linear buffer has the appropriate amount of
  *       memory to contain the copy operation
  */
-void Serial::circularCopy(uint8_t *circularBuff, uint8_t circularBuffSize, uint8_t *linearBuff, uint16_t tailPosition, uint16_t headPosition)
+void Serial::circularCopy(uint8_t *circularBuff, uint16_t circularBuffSize, uint8_t *linearBuff, uint16_t tailPosition, uint16_t headPosition)
 {
     int toBuffIndex = 0;
 
@@ -265,7 +265,7 @@ void Serial::circularCopy(uint8_t *circularBuff, uint8_t circularBuffSize, uint8
  *
  *       Buffers aren't allocated until the first send or receive respectively.
  */
-Serial::Serial(Pin& tx, Pin& rx, uint8_t rxBufferSize, uint8_t txBufferSize, uint16_t id) : tx(tx), rx(rx)
+Serial::Serial(Pin& tx, Pin& rx, uint16_t rxBufferSize, uint16_t txBufferSize, uint16_t id) : tx(tx), rx(rx)
 {
     this->id = id;
 
@@ -1006,7 +1006,7 @@ int Serial::isWriteable()
  * @return CODAL_SERIAL_IN_USE if another fiber is currently using this instance
  *         for reception, otherwise DEVICE_OK.
  */
-int Serial::setRxBufferSize(uint8_t size)
+int Serial::setRxBufferSize(uint16_t size)
 {
     if(rxInUse())
         return DEVICE_SERIAL_IN_USE;
@@ -1031,7 +1031,7 @@ int Serial::setRxBufferSize(uint8_t size)
  * @return CODAL_SERIAL_IN_USE if another fiber is currently using this instance
  *         for transmission, otherwise DEVICE_OK.
  */
-int Serial::setTxBufferSize(uint8_t size)
+int Serial::setTxBufferSize(uint16_t size)
 {
     if(txInUse())
         return DEVICE_SERIAL_IN_USE;

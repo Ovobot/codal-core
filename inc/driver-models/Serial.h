@@ -78,12 +78,12 @@ namespace codal
         int rxBuffHeadMatch;
 
         uint8_t *rxBuff;
-        uint8_t rxBuffSize;
+        uint16_t rxBuffSize;
         volatile uint16_t rxBuffHead;
         uint16_t rxBuffTail;
 
         uint8_t *txBuff;
-        uint8_t txBuffSize;
+        uint16_t txBuffSize;
         uint16_t txBuffHead;
         volatile uint16_t txBuffTail;
 
@@ -109,7 +109,7 @@ namespace codal
          */
         int initialiseTx();
 
-        void circularCopy(uint8_t *circularBuff, uint8_t circularBuffSize, uint8_t *linearBuff, uint16_t tailPosition, uint16_t headPosition);
+        void circularCopy(uint8_t *circularBuff, uint16_t circularBuffSize, uint8_t *linearBuff, uint16_t tailPosition, uint16_t headPosition);
 
         void send(SerialMode mode = DEVICE_DEFAULT_SERIAL_MODE);
 
@@ -147,7 +147,7 @@ namespace codal
           *
           *       Buffers aren't allocated until the first send or receive respectively.
           */
-        Serial(Pin& tx, Pin& rx, uint8_t rxBufferSize = CODAL_SERIAL_DEFAULT_BUFFER_SIZE, uint8_t txBufferSize = CODAL_SERIAL_DEFAULT_BUFFER_SIZE, uint16_t id  = DEVICE_ID_SERIAL);
+        Serial(Pin& tx, Pin& rx, uint16_t rxBufferSize = CODAL_SERIAL_DEFAULT_BUFFER_SIZE, uint16_t txBufferSize = CODAL_SERIAL_DEFAULT_BUFFER_SIZE, uint16_t id  = DEVICE_ID_SERIAL);
 
         /**
           * Sends a single character over the serial line.
@@ -440,7 +440,7 @@ namespace codal
           * @return CODAL_SERIAL_IN_USE if another fiber is currently using this instance
           *         for reception, otherwise DEVICE_OK.
           */
-        int setRxBufferSize(uint8_t size);
+        int setRxBufferSize(uint16_t size);
 
         /**
           * Reconfigures the size of our txBuff
@@ -450,7 +450,7 @@ namespace codal
           * @return CODAL_SERIAL_IN_USE if another fiber is currently using this instance
           *         for transmission, otherwise DEVICE_OK.
           */
-        int setTxBufferSize(uint8_t size);
+        int setTxBufferSize(uint16_t size);
 
         /**
           * The size of our rx buffer in bytes.
