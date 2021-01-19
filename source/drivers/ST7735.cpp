@@ -326,10 +326,17 @@ int ST7735::setSleep(bool sleepMode)
         this->inSleepMode = true;
         waitForSendDone();
         sendCmd(&cmd, 1);
+        fiber_sleep(120);
+        cmd = ST7735_DISPOFF;
+        sendCmd(&cmd, 1);
+        fiber_sleep(120);
     }
     else
     {
         uint8_t cmd = ST7735_SLPOUT;
+        sendCmd(&cmd, 1);
+        fiber_sleep(500);
+        cmd = ST7735_DISPON;
         sendCmd(&cmd, 1);
         fiber_sleep(120);
         this->inSleepMode = false;
